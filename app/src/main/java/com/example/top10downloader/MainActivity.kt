@@ -1,16 +1,9 @@
 package com.example.top10downloader
 
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.lang.Exception
-import java.lang.StringBuilder
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
@@ -48,45 +41,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             private fun downloadXML(urlPath: String?) : String {
-                val xmlResult = StringBuilder()
-
-                try {
-                    val url = URL(urlPath)
-                    val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                    val response = connection.responseCode
-                    Log.d(TAG, "downloadXML: the response code was $response")
-
-//            val inputStream = connection.inputStream
-//            val inputStreamReader = InputStreamReader(inputStream)
-//            val reader = BufferedReader(inputStreamReader)
-                    val reader = BufferedReader(InputStreamReader(connection.inputStream))
-
-                    val inputBuffer = CharArray(500)
-                    var charsRead = 0
-
-                    while (charsRead >= 0) {
-                        charsRead = reader.read(inputBuffer)
-                        if (charsRead > 0) {
-                            xmlResult.append(String(inputBuffer, 0, charsRead))
-                        }
-                    }
-
-                    reader.close()
-                    Log.d(TAG, "Received ${xmlResult.length} bytes")
-
-                    return xmlResult.toString()
-
-                } catch (e: MalformedURLException) {
-                    Log.e(TAG, "downloadXML: Invalid URL ${e.message}")
-                } catch (e: IOException) {
-                    Log.e(TAG, "downloadXML: IO exception reading data ${e.message}")
-                } catch(e: SecurityException) {
-                    Log.e(TAG, "downloadXML: security exception ${e.message}")
-                } catch (e: Exception) {
-                    Log.e(TAG, "downloadXML: unknown error ${e.message}")
-                }
-
-                return ""
+                return URL(urlPath).readText()
             }
         }
     }
